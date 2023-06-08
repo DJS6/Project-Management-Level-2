@@ -1,4 +1,5 @@
-def battle(your_name, your_hp, your_type, enemy_name, enemy_hp, enemy_type):
+def battle(your_name, your_hp, your_type, your_attacks,
+           enemy_name, enemy_hp, enemy_type, enemy_attacks):
     """Starts the combat loop, and returns relevant info at the end."""
     # Repeats until combat finished.
     while True:
@@ -12,6 +13,7 @@ HP: {}                                              HP: {}
 {} Type                                             {} Type""".format(
             enemy_name, your_name, enemy_hp, your_hp, enemy_type, your_type))
         # Let them make choice around which attack to use.
+        print("{}'s Attacks:".format(your_name))
         # Calculate damage.
         # Inform user of updates.
         # Check if defeated, if so exit.
