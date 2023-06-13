@@ -73,7 +73,14 @@ HP: {}                                              HP: {}
         # Uses enemy type and attack chosen to determine damage.
         your_attack_damage = damage_calculator(your_attack_choice, enemy_type)
         # Inform user of updates.
-        # TODO: Add message saying how effective it was based on damage ranges.
+        # Every pokemon has 1000 hp total.
+        # Message saying how effective it was based on damage ranges.
+        if your_attack_damage < 50:
+            print("Your attack was ineffective!")
+        elif your_attack_damage < 150:
+            print("Your attack was quite effective!")
+        elif your_attack_damage < 215:
+            print("Your attack was VERY EFFECTIVE!")
         print("{} lost {} HP!".format(enemy_name))
         # Check if defeated, if so exit.
         if enemy_hp <= 0:
@@ -87,7 +94,13 @@ HP: {}                                              HP: {}
         # Calculate damage.
         enemy_attack_damage = damage_calculator(enemy_attack_choice, your_type)
         # Inform user of updates.
-        # TODO: Add message saying how effective it was based on damage ranges.
+        # Message saying how effective it was based on damage ranges.
+        if your_attack_damage < 50:
+            print("Your attack was ineffective!")
+        elif your_attack_damage < 150:
+            print("Your attack was quite effective!")
+        elif your_attack_damage < 215:
+            print("Your attack was VERY EFFECTIVE!")
         print("{} lost {} HP!".format(your_name))
         # Check if defeated, if so exit.
         if your_hp <= 0:
