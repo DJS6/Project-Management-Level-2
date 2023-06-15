@@ -2,15 +2,13 @@ from random import randint
 # Common Functions.
 
 
-def check_str_input(question, choices):
+def check_str_input(question: str, choices: list):
     """Asks user a question, then checks user's input against a list of
        possible choices and ensures it's in it"""
     # Repeats until value returned.
     while True:
         # Asks question and saves answer.
         user_input = str(input(question))
-        # Makes it more readable.
-        user_input = user_input.lower().strip()
         # Checks it against choices list.
         if user_input in choices:
             # If in list, returns value.
@@ -68,19 +66,18 @@ def battle(your_name: str, your_hp: int, your_type: str, your_attacks: list,
         # Display information (and graphic?) to user.
         # Displays enemy's name, as well as their health.
         # And the type of pokemon they are.
-        print("""
-ENEMY POKÉMON:                                      YOUR POKÉMON:
-Name: {}                                            Name: {}
-HP: {}                                              HP: {}
-{} Type                                             {} Type""".format(
-            enemy_name, your_name, enemy_hp, your_hp, enemy_type, your_type))
+        print("""ENEMY POKÉMON: Name: {} HP: {} Type: {}
+YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
+            enemy_name, enemy_hp, enemy_type, your_name, your_hp, your_type))
         # Let them make choice around which attack to use.
         # Prints out all attacks in a list.
-        print("{}'s Attacks:".format(your_name))
-        print(your_attacks.join(", "))
+        print("\n{}'s Attacks:".format(your_name))
+        print(", ".join(your_attacks))
         # Asks user to choose one and saves choice.
         your_attack_choice = check_str_input("Choose your Attack: ",
                                              your_attacks)
+        # For debug, comment out later.
+        print(your_attack_choice)
         # Calculate damage.
         # Uses enemy type and attack chosen to determine damage.
         your_attack_damage = damage_calculator(your_attack_choice, enemy_type)
@@ -99,6 +96,7 @@ HP: {}                                              HP: {}
         # 215 and upwards (to max of 300) is the most effective kind.
         else:
             print("{}'s attack was VERY EFFECTIVE!".format(your_name))
+        enemy_hp -= your_attack_damage
         print("{} lost {} HP!".format(enemy_name, your_attack_damage))
         # Check if defeated, if so exit.
         if enemy_hp <= 0:
@@ -108,7 +106,7 @@ HP: {}                                              HP: {}
         # Switch to enemy.
         # Choose attack for enemy.
         # Randomly selects attack from list.
-        enemy_attack_choice = enemy_attacks[randint(0, len(enemy_attacks - 1))]
+        enemy_attack_choice = enemy_attacks[randint(0, len(enemy_attacks) - 1)]
         # Calculate damage.
         enemy_attack_damage = damage_calculator(enemy_attack_choice, your_type)
         # Inform user of updates.
@@ -125,6 +123,7 @@ HP: {}                                              HP: {}
         # 215 and upwards (to max of 300) is the most effective kind.
         else:
             print("{}'s attack was VERY EFFECTIVE!".format(enemy_name))
+        your_hp -= enemy_attack_damage
         print("{} lost {} HP!".format(your_name, enemy_attack_damage))
         # Check if defeated, if so exit.
         if your_hp <= 0:
@@ -132,3 +131,12 @@ HP: {}                                              HP: {}
             # Returns current HP, so user can heal pokemon later.
             # As your pokemon is defeated however, program can just return 0.
             return 0
+
+
+# For testing.
+battle("Playername", 750, "Type1", ["Type1_effective_attack",
+                                    "Type1_moderately_effective_attack",
+                                    "Type1_not_effective_attack"],
+       "Enemyname", 700, "Type1", ["Type1_effective_attack",
+                                   "Type1_moderately_effective_attack",
+                                   "Type1_not_effective_attack"])
