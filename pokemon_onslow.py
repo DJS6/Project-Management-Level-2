@@ -5,12 +5,22 @@ from random import randint
 def check_str_input(question: str, choices: list):
     """Asks user a question, then checks user's input against a list of
        possible choices and ensures it's in it"""
+    # Fixes up choices list so it doesn't care about capitalisation.
+    lower_choices = []
+    for choice in choices:
+        # Gets every choice and lowers the case.
+        lower_choices.append(choice.lower())
     # Repeats until value returned.
     while True:
         # Asks question and saves answer.
         user_input = str(input(question))
+        # Makes it more readable.
+        user_input = user_input.lower().strip()
         # Checks it against choices list.
-        if user_input in choices:
+        if user_input in lower_choices:
+            # Reformats input case for later in program.
+            user_input = user_input.replace(
+                user_input[0], user_input[0].upper(), 1)
             # If in list, returns value.
             return user_input
         else:
