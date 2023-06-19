@@ -82,6 +82,7 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         # Uses enemy type and attack chosen to determine damage.
         your_attack_damage = damage_calculator(your_attack_choice, enemy_type)
         # Inform user of updates.
+        print("{} used {}!".format(your_name, your_attack_choice))
         # Every pokemon has 1000 hp total.
         # Message saying how effective it was based on damage ranges.
         # If between 0 and 50 then it's not effective.
@@ -110,6 +111,7 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         # Calculate damage.
         enemy_attack_damage = damage_calculator(enemy_attack_choice, your_type)
         # Inform user of updates.
+        print("{} used {}!".format(enemy_name, enemy_attack_choice))
         # Message saying how effective it was based on damage ranges.
         # If between 0 and 50 then it's not effective.
         if enemy_attack_damage < 50:
