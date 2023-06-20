@@ -57,13 +57,13 @@ def damage_calculator(attacker_attack_choice, type_of_attacked) -> int:
     if type_of_attacked == "Type1":
         # If attack is effective against this type, it can deal 200-300 damage.
         if attacker_attack_choice == "Type1_effective_attack":
-            return randint(200, 300)
+            return randint(225, 350)
         # If it is only moderately effective, it deals between 100-200.
         elif attacker_attack_choice == "Type1_moderately_effective_attack":
-            return randint(100, 200)
+            return randint(113, 225)
         # If it is not effective it can deal no more than 100.
         elif attacker_attack_choice == "Type1_not_effective_attack":
-            return randint(1, 100)
+            return randint(1, 112)
 
 
 def battle(your_name: str, your_hp: int, your_type: str, your_attacks: list,
@@ -95,16 +95,16 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         print("{} used {}!".format(your_name, your_attack_choice))
         # Every pokemon has 1000 hp total.
         # Message saying how effective it was based on damage ranges.
-        # If between 0 and 50 then it's not effective.
-        if your_attack_damage < 50:
+        # If between 0 and 80 then it's not effective.
+        if your_attack_damage < 80:
             print("{}'s attack was ineffective!".format(your_name))
-        # 50-150 is effective, but not very.
-        elif your_attack_damage < 150:
+        # 100-160 is effective, but not very.
+        elif your_attack_damage < 160:
             print("{}'s attack was somewhat effective!".format(your_name))
-        # 150-215 is more effective, but it can still be better.
-        elif your_attack_damage < 215:
+        # 160-240 is more effective, but it can still be better.
+        elif your_attack_damage < 240:
             print("{}'s attack was effective!".format(your_name))
-        # 215 and upwards (to max of 300) is the most effective kind.
+        # 240 and upwards (to max of 350) is the most effective kind.
         else:
             print("{}'s attack was VERY EFFECTIVE!".format(your_name))
         enemy_hp -= your_attack_damage
