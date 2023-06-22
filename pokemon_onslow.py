@@ -1,4 +1,10 @@
 from random import randint
+# Defines character list and constants for access.
+all_characters_list = [["Name", "Type", ["Attack1", "Attack2"]],
+                       ["Name2", "Type2", ["Attack3", "Attack4"]]]
+CHARACTERS_NAMES_INDEX = 0
+CHARACTERS_TYPES_INDEX = 1
+CHARACTERS_ATTACKS_INDEX = 2
 # Common Functions.
 
 
@@ -76,7 +82,7 @@ def battle(your_name: str, your_hp: int, your_type: str, your_attacks: list,
         # Display information (and graphic?) to user.
         # Displays enemy's name, as well as their health.
         # And the type of pokemon they are.
-        print("""ENEMY POKÉMON: Name: {} HP: {} Type: {}
+        print("""\nENEMY POKÉMON: Name: {} HP: {} Type: {}\n
 YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
             enemy_name, enemy_hp, enemy_type, your_name, your_hp, your_type))
         # Let them make choice around which attack to use.
@@ -84,15 +90,15 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         print("\n{}'s Attacks:".format(your_name))
         print(", ".join(your_attacks))
         # Asks user to choose one and saves choice.
-        your_attack_choice = check_str_input("Choose your Attack: ",
+        your_attack_choice = check_str_input("\nChoose your Attack: ",
                                              your_attacks)
         # For debug, comment out later.
-        print(your_attack_choice)
+        # print(your_attack_choice)
         # Calculate damage.
         # Uses enemy type and attack chosen to determine damage.
         your_attack_damage = damage_calculator(your_attack_choice, enemy_type)
         # Inform user of updates.
-        print("{} used {}!".format(your_name, your_attack_choice))
+        print("\n{} used {}!".format(your_name, your_attack_choice))
         # Every pokemon has 1000 hp total.
         # Message saying how effective it was based on damage ranges.
         # If between 0 and 80 then it's not effective.
@@ -108,10 +114,10 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         else:
             print("{}'s attack was VERY EFFECTIVE!".format(your_name))
         enemy_hp -= your_attack_damage
-        print("{} lost {} HP!".format(enemy_name, your_attack_damage))
+        print("\n{} lost {} HP!".format(enemy_name, your_attack_damage))
         # Check if defeated, if so exit.
         if enemy_hp <= 0:
-            print("{} is defeated!".format(enemy_name))
+            print("\n{} is defeated!".format(enemy_name))
             # Returns current HP, so user can heal pokemon later.
             return your_hp
         # Switch to enemy.
@@ -121,7 +127,7 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         # Calculate damage.
         enemy_attack_damage = damage_calculator(enemy_attack_choice, your_type)
         # Inform user of updates.
-        print("{} used {}!".format(enemy_name, enemy_attack_choice))
+        print("\n{} used {}!".format(enemy_name, enemy_attack_choice))
         # Message saying how effective it was based on damage ranges.
         # If between 0 and 50 then it's not effective.
         if enemy_attack_damage < 50:
@@ -136,16 +142,38 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         else:
             print("{}'s attack was VERY EFFECTIVE!".format(enemy_name))
         your_hp -= enemy_attack_damage
-        print("{} lost {} HP!".format(your_name, enemy_attack_damage))
+        print("\n{} lost {} HP!".format(your_name, enemy_attack_damage))
         # Check if defeated, if so exit.
         if your_hp <= 0:
-            print("{} is defeated!".format(your_name))
+            print("\n{} is defeated!".format(your_name))
             # Returns current HP, so user can heal pokemon later.
             # As your pokemon is defeated however, program can just return 0.
             return 0
 
 
+def character_selection(all_characters_list: list) -> tuple:
+    """Allows user to choose a character and returns name, type, [Attacks]"""
+    character_names = []
+    print("CHOOSE YOUR CHARACTER!")
+    # Goes through entire list.
+    for character in all_characters_list:
+        # Creates a list of all names for when user decides to input.
+        character_names.append(character[CHARACTERS_NAMES_INDEX])
+        # Prints names and types of each character.
+        print("\n{}: {} Type\nAttacks:".format(
+            character[CHARACTERS_NAMES_INDEX],
+            character[CHARACTERS_TYPES_INDEX]))
+        # Prints all attacks for each character.
+        for attack in character[CHARACTERS_ATTACKS_INDEX]:
+            print(attack)
+    # Asks user for character choice.
+    check_str_input("\nEnter the Name of Character You Wish to Choose: ",
+                    character_names)
+    # TODO: Return valid info.
+
+
 # For testing.
+character_selection(all_characters_list)
 battle("Playername", 750, "Type1", ["Type1_effective_attack",
                                     "Type1_moderately_effective_attack",
                                     "Type1_not_effective_attack"],
