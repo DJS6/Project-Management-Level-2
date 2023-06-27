@@ -166,14 +166,23 @@ def character_selection(all_characters_list: list) -> tuple:
         # Prints all attacks for each character.
         for attack in character[CHARACTERS_ATTACKS_INDEX]:
             print(attack)
-    # Asks user for character choice.
-    check_str_input("\nEnter the Name of Character You Wish to Choose: ",
-                    character_names)
-    # TODO: Return valid info.
+    # Asks user for character choice and saves it.
+    character_name_choice = check_str_input(
+        "\nEnter the Name of Character You Wish to Choose: ", character_names)
+    # Finds the index that that name is in the list.
+    user_choice_index = character_names.index(character_name_choice)
+    # Returns name, index, and attacks in that order.
+    return all_characters_list[user_choice_index][
+        CHARACTERS_NAMES_INDEX], all_characters_list[user_choice_index][
+            CHARACTERS_TYPES_INDEX], all_characters_list[user_choice_index][
+                CHARACTERS_ATTACKS_INDEX]
 
 
 # For testing.
-character_selection(all_characters_list)
+user_name, user_type, user_attacks = character_selection(all_characters_list)
+print(user_name)
+print(user_type)
+print(user_attacks)
 battle("Playername", 750, "Type1", ["Type1_effective_attack",
                                     "Type1_moderately_effective_attack",
                                     "Type1_not_effective_attack"],
