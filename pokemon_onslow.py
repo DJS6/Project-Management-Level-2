@@ -1,10 +1,11 @@
 from random import randint
 # Defines character list and constants for access.
-all_characters_list = [["Name", "Type", ["Attack1", "Attack2"]],
-                       ["Name2", "Type2", ["Attack3", "Attack4"]]]
+all_characters_list = [["Name", 1000, "Type1", ["Attack1", "Attack2"]],
+                       ["Name2", 1500, "Type1", ["Attack3", "Attack4"]]]
 CHARACTERS_NAMES_INDEX = 0
-CHARACTERS_TYPES_INDEX = 1
-CHARACTERS_ATTACKS_INDEX = 2
+CHARACTERS_HP_INDEX = 1
+CHARACTERS_TYPES_INDEX = 2
+CHARACTERS_ATTACKS_INDEX = 3
 money = 100
 # Common Functions.
 
@@ -160,10 +161,10 @@ def character_selection(all_characters_list: list) -> tuple:
     for character in all_characters_list:
         # Creates a list of all names for when user decides to input.
         character_names.append(character[CHARACTERS_NAMES_INDEX])
-        # Prints names and types of each character.
-        print("\n{}: {} Type\nAttacks:".format(
+        # Prints names, healths, and types of each character.
+        print("\n{}: {} HP {} Type\nAttacks:".format(
             character[CHARACTERS_NAMES_INDEX],
-            character[CHARACTERS_TYPES_INDEX]))
+            character[CHARACTERS_HP_INDEX], character[CHARACTERS_TYPES_INDEX]))
         # Prints all attacks for each character.
         for attack in character[CHARACTERS_ATTACKS_INDEX]:
             print(attack)
@@ -175,11 +176,12 @@ def character_selection(all_characters_list: list) -> tuple:
     # Returns name, index, and attacks in that order.
     return all_characters_list[user_choice_index][
         CHARACTERS_NAMES_INDEX], all_characters_list[user_choice_index][
+            CHARACTERS_HP_INDEX], all_characters_list[user_choice_index][
             CHARACTERS_TYPES_INDEX], all_characters_list[user_choice_index][
                 CHARACTERS_ATTACKS_INDEX]
 
 
-def heal(money, hp, max_hp):
+def heal(money: int, hp: int, max_hp: int) -> tuple:
     """Ask user how much they want to heal, validates int and charges money."""
     while True:
         # Tells user how much health they have and how much is their max.
@@ -194,24 +196,37 @@ def heal(money, hp, max_hp):
         else:
             # Calculates the cost of the healing.
             # 50 cents per HP healed.
-            cost = heal_amount * 0.5
+            cost = int(heal_amount * 0.5)
             # If it's too expensive.
             if cost > money:
                 print("You cannot afford the cost of "
                       "${:.2f} as you only have ${:.2f}".format(cost, money))
             else:
-                print("You have been healed for ")
+                # Adds amount to heal to your HP.
+                hp += heal_amount
+                # Removes cost from your money.
+                money -= cost
+                # Tells user what just happened.
+                print("You have been healed for {} HP, for ${:.2f}".format(
+                    heal_amount, cost))
+                print("You now have {} HP and ${:2f}".format())
+                # Returns updated figures for cost and health.
+                return hp, money
 
 
 # For testing.
-user_name, user_type, user_attacks = character_selection(all_characters_list)
+user_name, user_hp, user_type, user_attacks = character_selection(
+    all_characters_list)
 print(user_name)
+print(user_hp)
 print(user_type)
 print(user_attacks)
-hp = battle("Playername", 750, "Type1", ["Type1_effective_attack",
-                                         "Type1_moderately_effective_attack",
-                                         "Type1_not_effective_attack"],
-            "Enemyname", 700, "Type1", ["Type1_effective_attack",
-                                        "Type1_moderately_effective_attack",
-                                        "Type1_not_effective_attack"])
-hp = heal(money, hp)
+current_user_hp = user_hp
+user_hp = battle(
+    "Playername", 750, "Type1", ["Type1_effective_attack",
+                                 "Type1_moderately_effective_attack",
+                                 "Type1_not_effective_attack"],
+    "Enemyname", 700, "Type1", ["Type1_effective_attack",
+                                "Type1_moderately_effective_attack",
+                                "Type1_not_effective_attack"])
+current_user_hp, money = heal(money, current_user_hp, user_hp)
