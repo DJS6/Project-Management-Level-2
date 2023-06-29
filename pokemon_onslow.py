@@ -5,6 +5,7 @@ all_characters_list = [["Name", "Type", ["Attack1", "Attack2"]],
 CHARACTERS_NAMES_INDEX = 0
 CHARACTERS_TYPES_INDEX = 1
 CHARACTERS_ATTACKS_INDEX = 2
+money = 100
 # Common Functions.
 
 
@@ -178,14 +179,39 @@ def character_selection(all_characters_list: list) -> tuple:
                 CHARACTERS_ATTACKS_INDEX]
 
 
+def heal(money, hp, max_hp):
+    """Ask user how much they want to heal, validates int and charges money."""
+    while True:
+        # Tells user how much health they have and how much is their max.
+        print("\nYou currently have {} HP, and you can heal up to a"
+              " maximum of {} HP".format(hp, max_hp))
+        # Asks user the question
+        heal_amount = check_int_input(
+            "How much HP do you want to heal? (Enter 0 if none): ")
+        # If user tries to heal over their maximum.
+        if heal_amount + hp > max_hp:
+            print("You can't heal that much HP as it exceeds your maximum.")
+        else:
+            # Calculates the cost of the healing.
+            # 50 cents per HP healed.
+            cost = heal_amount * 0.5
+            # If it's too expensive.
+            if cost > money:
+                print("You cannot afford the cost of "
+                      "${:.2f} as you only have ${:.2f}".format(cost, money))
+            else:
+                print("You have been healed for ")
+
+
 # For testing.
 user_name, user_type, user_attacks = character_selection(all_characters_list)
 print(user_name)
 print(user_type)
 print(user_attacks)
-battle("Playername", 750, "Type1", ["Type1_effective_attack",
-                                    "Type1_moderately_effective_attack",
-                                    "Type1_not_effective_attack"],
-       "Enemyname", 700, "Type1", ["Type1_effective_attack",
-                                   "Type1_moderately_effective_attack",
-                                   "Type1_not_effective_attack"])
+hp = battle("Playername", 750, "Type1", ["Type1_effective_attack",
+                                         "Type1_moderately_effective_attack",
+                                         "Type1_not_effective_attack"],
+            "Enemyname", 700, "Type1", ["Type1_effective_attack",
+                                        "Type1_moderately_effective_attack",
+                                        "Type1_not_effective_attack"])
+hp = heal(money, hp)
