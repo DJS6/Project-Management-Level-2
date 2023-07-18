@@ -209,12 +209,15 @@ def heal(money: int, hp: int, max_hp: int) -> tuple:
                 # Tells user what just happened.
                 print("You have been healed for {} HP, for ${:.2f}".format(
                     heal_amount, cost))
-                print("You now have {} HP and ${:2f}".format())
+                print("You now have {} HP and ${:.2f}".format(hp, money))
                 # Returns updated figures for cost and health.
                 return hp, money
 
 
 # For testing.
+current_user_hp = 100
+user_hp = 150
+current_user_hp, money = heal(money, current_user_hp, user_hp)
 user_name, user_hp, user_type, user_attacks = character_selection(
     all_characters_list)
 print(user_name)
@@ -229,4 +232,3 @@ user_hp = battle(
     "Enemyname", 700, "Type1", ["Type1_effective_attack",
                                 "Type1_moderately_effective_attack",
                                 "Type1_not_effective_attack"])
-current_user_hp, money = heal(money, current_user_hp, user_hp)
