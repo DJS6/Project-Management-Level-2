@@ -1,12 +1,56 @@
 from random import randint
 # Defines character list and constants for access.
-all_characters_list = [["Name", 1000, "Type1", ["Attack1", "Attack2"]],
-                       ["Name2", 1500, "Type1", ["Attack3", "Attack4"]]]
+ALL_CHARACTERS_LIST = [["Science", 1450, "STEM",
+                        ["Chemical Chuck", "Safety Glasses Sunbeam",
+                         "Radioactive Rumble"]],
+                       ["Maths", 1300, "STEM",
+                        ["Trigonometry Throw", "Mathlete Math-yeet",
+                         "Calculus Crunch"]],
+                       ["Digitech", 1500, "STEM",
+                        ["Keyboard K.O.", "Software Slay",
+                         "Rust-y Nail Roll"]],
+                       ["Art", 1100, "Arts",
+                        ["Painting Punch", "Sculpture Smash",
+                         "Watercolour Wipeout"]],
+                       ["Music", 1400, "Arts",
+                        ["Saxophone Shred", "Drumming Destruction",
+                         "Double Bass Drop"]],
+                       ["Drama", 1050, "Arts",
+                        ["Theatre Kid Throw", "Blocking Blow",
+                         "Production Prod"]]]
 CHARACTERS_NAMES_INDEX = 0
 CHARACTERS_HP_INDEX = 1
 CHARACTERS_TYPES_INDEX = 2
 CHARACTERS_ATTACKS_INDEX = 3
 money = 100
+STEM_EFFECTIVE_INDEX = 0
+STEM_MODERATE_INDEX = 1
+STEM_INEFFECT_INDEX = 2
+ARTS_INEFFECT_INDEX = 0
+ARTS_MODERATE_INDEX = 1
+ARTS_EFFECTIVE_INDEX = 2
+# Function to use in working out lists.
+
+
+def effectiveness_list_creator(index):
+    """Using an index appends attack for all characters to list and returns."""
+    # Sets up list to append to.
+    effectiveness_list = []
+    # Runs through every character in list.
+    for character in ALL_CHARACTERS_LIST:
+        # Appends correct attack from each character's list.
+        effectiveness_list.append(character[CHARACTERS_ATTACKS_INDEX][index])
+    return effectiveness_list
+
+
+# Lists of which attacks are effective and not against specific types.
+# Works out each list by appending the correct attack from each character.
+STEM_EFFECTIVE_ATTACKS = effectiveness_list_creator(STEM_EFFECTIVE_INDEX)
+STEM_MODERATE_ATTACKS = effectiveness_list_creator(STEM_MODERATE_INDEX)
+STEM_INEFFECT_ATTACKS = effectiveness_list_creator(STEM_INEFFECT_INDEX)
+ARTS_EFFECTIVE_ATTACKS = effectiveness_list_creator(ARTS_EFFECTIVE_INDEX)
+ARTS_MODERATE_ATTACKS = effectiveness_list_creator(ARTS_MODERATE_INDEX)
+ARTS_INEFFECT_ATTACKS = effectiveness_list_creator(ARTS_INEFFECT_INDEX)
 # Common Functions.
 
 
@@ -59,18 +103,27 @@ def check_int_input(question):
 def damage_calculator(attacker_attack_choice, type_of_attacked) -> int:
     """Uses attack chosen and type of pokemon attacked to calculate damage,
     Based on which attacks are which effective against which types."""
-    # TODO: Function.
     # Example Structure, can copy and fill names after feedback.
     # Gets the type of pokemon that is being attacked.
-    if type_of_attacked == "Type1":
+    if type_of_attacked == "STEM":
         # If attack is effective against this type, it can deal 200-300 damage.
-        if attacker_attack_choice == "Type1_effective_attack":
+        if attacker_attack_choice in STEM_EFFECTIVE_ATTACKS:
             return randint(225, 350)
         # If it is only moderately effective, it deals between 100-200.
-        elif attacker_attack_choice == "Type1_moderately_effective_attack":
+        elif attacker_attack_choice == STEM_MODERATE_ATTACKS:
             return randint(113, 225)
         # If it is not effective it can deal no more than 100.
-        elif attacker_attack_choice == "Type1_not_effective_attack":
+        elif attacker_attack_choice == STEM_INEFFECT_ATTACKS:
+            return randint(1, 112)
+    elif type_of_attacked == "Arts":
+        # If attack is effective against this type, it can deal 200-300 damage.
+        if attacker_attack_choice == ARTS_EFFECTIVE_ATTACKS:
+            return randint(225, 350)
+        # If it is only moderately effective, it deals between 100-200.
+        elif attacker_attack_choice == ARTS_MODERATE_ATTACKS:
+            return randint(113, 225)
+        # If it is not effective it can deal no more than 100.
+        elif attacker_attack_choice == ARTS_INEFFECT_ATTACKS:
             return randint(1, 112)
 
 
@@ -219,7 +272,7 @@ current_user_hp = 100
 user_hp = 150
 current_user_hp, money = heal(money, current_user_hp, user_hp)
 user_name, user_hp, user_type, user_attacks = character_selection(
-    all_characters_list)
+    ALL_CHARACTERS_LIST)
 print(user_name)
 print(user_hp)
 print(user_type)
