@@ -32,7 +32,7 @@ ARTS_EFFECTIVE_INDEX = 2
 # Function to use in working out lists.
 
 
-def effectiveness_list_creator(index):
+def effectiveness_list_creator(index: int) -> list:
     """Using an index appends attack for all characters to list and returns."""
     # Sets up list to append to.
     effectiveness_list = []
@@ -54,7 +54,7 @@ ARTS_INEFFECT_ATTACKS = effectiveness_list_creator(ARTS_INEFFECT_INDEX)
 # Common Functions.
 
 
-def check_str_input(question: str, choices: list):
+def check_str_input(question: str, choices: list) -> str:
     """Asks user a question, then checks user's input against a list of
        possible choices and ensures it's in it"""
     # Fixes up choices list so it doesn't care about capitalisation.
@@ -81,7 +81,7 @@ def check_str_input(question: str, choices: list):
                   " as listed above.")
 
 
-def check_int_input(question):
+def check_int_input(question) -> int:
     """Takes a question and keeps asking user until a valid answer is entered,
     which it then returns"""
     # Repeats until correct input entered.
@@ -129,12 +129,13 @@ def damage_calculator(attacker_attack_choice, type_of_attacked) -> int:
 
 def battle(your_name: str, your_hp: int, your_type: str, your_attacks: list,
            enemy_name: str, enemy_hp: int, enemy_type: str,
-           enemy_attacks: list):
-    """Starts the combat loop, and returns health of user's pokemon at the end.
+           enemy_attacks: list, money: int) -> tuple:
+    """Start the combat loop, returns health of user's pokemon and their money.
     All input strings must have proper capitalisation."""
     # Repeats until combat finished.
     while True:
-        # Display information (and graphic?) to user.
+        # Display information to user.
+        # TODO: Potentially add graphic?
         # Displays enemy's name, as well as their health.
         # And the type of pokemon they are.
         print("""\nENEMY POKÉMON: Name: {} HP: {} Type: {}\n
@@ -172,9 +173,12 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         print("\n{} lost {} HP!".format(enemy_name, your_attack_damage))
         # Check if defeated, if so exit.
         if enemy_hp <= 0:
-            print("\n{} is defeated!".format(enemy_name))
+            print("\n{} is defeated!\nYOU WIN!".format(enemy_name))
             # Returns current HP, so user can heal pokemon later.
-            return your_hp
+            # Calculates uncertain reward and returns that and your HP.
+            # TODO: Change randint values based on user feedback.
+            money += randint(300, 600)
+            return your_hp, money
         # Switch to enemy.
         # Choose attack for enemy.
         # Randomly selects attack from list.
@@ -200,10 +204,10 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         print("\n{} lost {} HP!".format(your_name, enemy_attack_damage))
         # Check if defeated, if so exit.
         if your_hp <= 0:
-            print("\n{} is defeated!".format(your_name))
+            print("\n{} is defeated!\nYOU LOSE!".format(your_name))
             # Returns current HP, so user can heal pokemon later.
             # As your pokemon is defeated however, program can just return 0.
-            return 0
+            return 0, money
 
 
 def character_selection(all_characters_list: list) -> tuple:
@@ -278,10 +282,10 @@ print(user_hp)
 print(user_type)
 print(user_attacks)
 current_user_hp = user_hp
-user_hp = battle(
+user_hp, money = battle(
     "Playername", 750, "Type1", ["Type1_effective_attack",
                                  "Type1_moderately_effective_attack",
                                  "Type1_not_effective_attack"],
     "Enemyname", 700, "Type1", ["Type1_effective_attack",
                                 "Type1_moderately_effective_attack",
-                                "Type1_not_effective_attack"])
+                                "Type1_not_effective_attack"], money)
