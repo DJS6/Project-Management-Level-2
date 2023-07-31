@@ -1,23 +1,23 @@
 from random import randint
 # Defines character list and constants for access.
 ALL_CHARACTERS_LIST = [["Science", 1450, "STEM",
-                        ["Chemical Chuck", "Safety Glasses Sunbeam",
-                         "Radioactive Rumble"]],
+                        ["Chemical chuck", "Safety glasses sunbeam",
+                         "Radioactive rumble"]],
                        ["Maths", 1300, "STEM",
-                        ["Trigonometry Throw", "Mathlete Math-yeet",
-                         "Calculus Crunch"]],
+                        ["Trigonometry throw", "Mathlete math-yeet",
+                         "Calculus crunch"]],
                        ["Digitech", 1500, "STEM",
-                        ["Keyboard K.O.", "Software Slay",
-                         "Rust-y Nail Roll"]],
+                        ["Keyboard k.o.", "Software slay",
+                         "Rust-y nail roll"]],
                        ["Art", 1100, "Arts",
-                        ["Painting Punch", "Sculpture Smash",
-                         "Watercolour Wipeout"]],
+                        ["Painting punch", "Sculpture smash",
+                         "Watercolour wipeout"]],
                        ["Music", 1400, "Arts",
-                        ["Saxophone Shred", "Drumming Destruction",
-                         "Double Bass Drop"]],
+                        ["Saxophone shred", "Drumming destruction",
+                         "Double bass drop"]],
                        ["Drama", 1050, "Arts",
-                        ["Theatre Kid Throw", "Blocking Blow",
-                         "Production Prod"]]]
+                        ["Theatre kid throw", "Blocking blow",
+                         "Production prod"]]]
 CHARACTERS_NAMES_INDEX = 0
 CHARACTERS_HP_INDEX = 1
 CHARACTERS_TYPES_INDEX = 2
@@ -110,28 +110,39 @@ def damage_calculator(attacker_attack_choice, type_of_attacked) -> int:
         if attacker_attack_choice in STEM_EFFECTIVE_ATTACKS:
             return randint(225, 350)
         # If it is only moderately effective, it deals between 100-200.
-        elif attacker_attack_choice == STEM_MODERATE_ATTACKS:
+        elif attacker_attack_choice in STEM_MODERATE_ATTACKS:
             return randint(113, 225)
         # If it is not effective it can deal no more than 100.
-        elif attacker_attack_choice == STEM_INEFFECT_ATTACKS:
+        elif attacker_attack_choice in STEM_INEFFECT_ATTACKS:
             return randint(1, 112)
     elif type_of_attacked == "Arts":
         # If attack is effective against this type, it can deal 200-300 damage.
-        if attacker_attack_choice == ARTS_EFFECTIVE_ATTACKS:
+        if attacker_attack_choice in ARTS_EFFECTIVE_ATTACKS:
             return randint(225, 350)
         # If it is only moderately effective, it deals between 100-200.
-        elif attacker_attack_choice == ARTS_MODERATE_ATTACKS:
+        elif attacker_attack_choice in ARTS_MODERATE_ATTACKS:
             return randint(113, 225)
         # If it is not effective it can deal no more than 100.
-        elif attacker_attack_choice == ARTS_INEFFECT_ATTACKS:
+        elif attacker_attack_choice in ARTS_INEFFECT_ATTACKS:
             return randint(1, 112)
 
 
+def enemy_random_select():
+    """Randomly chooses an enemy from the list and returns their attributes."""
+    random_selection = randint(0, len(ALL_CHARACTERS_LIST) - 1)
+    return ALL_CHARACTERS_LIST[random_selection][
+        CHARACTERS_NAMES_INDEX], ALL_CHARACTERS_LIST[
+            random_selection][CHARACTERS_HP_INDEX], ALL_CHARACTERS_LIST[
+                random_selection][CHARACTERS_TYPES_INDEX], ALL_CHARACTERS_LIST[
+                    random_selection][CHARACTERS_ATTACKS_INDEX]
+
+
 def battle(your_name: str, your_hp: int, your_type: str, your_attacks: list,
-           enemy_name: str, enemy_hp: int, enemy_type: str,
-           enemy_attacks: list, money: int) -> tuple:
+           money: int) -> tuple:
     """Start the combat loop, returns health of user's pokemon and their money.
     All input strings must have proper capitalisation."""
+    # Randomises enemy choice.
+    enemy_name, enemy_hp, enemy_type, enemy_attacks = enemy_random_select()
     # Repeats until combat finished.
     while True:
         # Display information to user.
@@ -282,10 +293,4 @@ print(user_hp)
 print(user_type)
 print(user_attacks)
 current_user_hp = user_hp
-user_hp, money = battle(
-    "Playername", 750, "Type1", ["Type1_effective_attack",
-                                 "Type1_moderately_effective_attack",
-                                 "Type1_not_effective_attack"],
-    "Enemyname", 700, "Type1", ["Type1_effective_attack",
-                                "Type1_moderately_effective_attack",
-                                "Type1_not_effective_attack"], money)
+user_hp, money = battle(user_name, user_hp, user_type, user_attacks, money)
