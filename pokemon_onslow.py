@@ -22,7 +22,7 @@ CHARACTERS_NAMES_INDEX = 0
 CHARACTERS_HP_INDEX = 1
 CHARACTERS_TYPES_INDEX = 2
 CHARACTERS_ATTACKS_INDEX = 3
-money = 100
+money = 150
 STEM_EFFECTIVE_INDEX = 0
 STEM_MODERATE_INDEX = 1
 STEM_INEFFECT_INDEX = 2
@@ -188,7 +188,7 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
             # Returns current HP, so user can heal pokemon later.
             # Calculates uncertain reward and returns that and your HP.
             # TODO: Change randint values based on user feedback.
-            money += randint(300, 600)
+            money += randint(150, 250)
             return your_hp, money
         # Switch to enemy.
         # Choose attack for enemy.
