@@ -1,4 +1,5 @@
 from random import randint
+from time import sleep
 # Defines character list and constants for access.
 ALL_CHARACTERS_LIST = [["Science", 1450, "STEM",
                         ["Chemical chuck", "Safety glasses sunbeam",
@@ -127,9 +128,15 @@ def damage_calculator(attacker_attack_choice, type_of_attacked) -> int:
             return randint(1, 112)
 
 
-def enemy_random_select():
+def enemy_random_select(user_name):
     """Randomly chooses an enemy from the list and returns their attributes."""
-    random_selection = randint(0, len(ALL_CHARACTERS_LIST) - 1)
+    while True:
+        random_selection = randint(0, len(ALL_CHARACTERS_LIST) - 1)
+        # If the enemy and character names are different it can move on.
+        # If they're the same it has to repeat.
+        if ALL_CHARACTERS_LIST[
+         random_selection][CHARACTERS_NAMES_INDEX] != user_name:
+            break
     return ALL_CHARACTERS_LIST[random_selection][
         CHARACTERS_NAMES_INDEX], ALL_CHARACTERS_LIST[
             random_selection][CHARACTERS_HP_INDEX], ALL_CHARACTERS_LIST[
@@ -142,20 +149,22 @@ def battle(your_name: str, your_hp: int, your_type: str, your_attacks: list,
     """Start the combat loop, returns health of user's pokemon and their money.
     All input strings must have proper capitalisation."""
     # Randomises enemy choice.
-    enemy_name, enemy_hp, enemy_type, enemy_attacks = enemy_random_select()
+    enemy_name, enemy_hp, enemy_type, enemy_attacks = enemy_random_select(
+        your_name)
     # Repeats until combat finished.
     while True:
         # Display information to user.
-        # TODO: Potentially add graphic?
         # Displays enemy's name, as well as their health.
         # And the type of pokemon they are.
         print("""\nENEMY POKÉMON: Name: {} HP: {} Type: {}\n
 YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
             enemy_name, enemy_hp, enemy_type, your_name, your_hp, your_type))
+        sleep(3)
         # Let them make choice around which attack to use.
         # Prints out all attacks in a list.
         print("\n{}'s Attacks:".format(your_name))
         print(", ".join(your_attacks))
+        sleep(1)
         # Asks user to choose one and saves choice.
         your_attack_choice = check_str_input("\nChoose your Attack: ",
                                              your_attacks)
@@ -166,7 +175,6 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
         your_attack_damage = damage_calculator(your_attack_choice, enemy_type)
         # Inform user of updates.
         print("\n{} used {}!".format(your_name, your_attack_choice))
-        # Every pokemon has 1000 hp total.
         # Message saying how effective it was based on damage ranges.
         # If between 0 and 80 then it's not effective.
         if your_attack_damage < 80:
@@ -182,12 +190,12 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
             print("{}'s attack was VERY EFFECTIVE!".format(your_name))
         enemy_hp -= your_attack_damage
         print("\n{} lost {} HP!".format(enemy_name, your_attack_damage))
+        sleep(2)
         # Check if defeated, if so exit.
         if enemy_hp <= 0:
             print("\n{} is defeated!\nYOU WIN!".format(enemy_name))
             # Returns current HP, so user can heal pokemon later.
             # Calculates uncertain reward and returns that and your HP.
-            # TODO: Change randint values based on user feedback.
             money += randint(150, 250)
             return your_hp, money
         # Switch to enemy.
@@ -213,6 +221,7 @@ YOUR POKÉMON: Name: {} HP: {} Type: {}""".format(
             print("{}'s attack was VERY EFFECTIVE!".format(enemy_name))
         your_hp -= enemy_attack_damage
         print("\n{} lost {} HP!".format(your_name, enemy_attack_damage))
+        sleep(1)
         # Check if defeated, if so exit.
         if your_hp <= 0:
             print("\n{} is defeated!\nYOU LOSE!".format(your_name))
@@ -236,6 +245,7 @@ def character_selection(all_characters_list: list) -> tuple:
         # Prints all attacks for each character.
         for attack in character[CHARACTERS_ATTACKS_INDEX]:
             print(attack)
+        sleep(3)
     # Asks user for character choice and saves it.
     character_name_choice = check_str_input(
         "\nEnter the Name of Character You Wish to Choose: ", character_names)
@@ -282,15 +292,40 @@ def heal(money: int, hp: int, max_hp: int) -> tuple:
                 return hp, money
 
 
-# For testing.
-current_user_hp = 100
-user_hp = 150
-current_user_hp, money = heal(money, current_user_hp, user_hp)
+# Setting user up with character.
+# Welcome Message.
+print("WELCOME TO POKÉMON ONSLOW!\n")
+sleep(1)
+# Character Selection.
 user_name, user_hp, user_type, user_attacks = character_selection(
     ALL_CHARACTERS_LIST)
-print(user_name)
-print(user_hp)
-print(user_type)
-print(user_attacks)
+# Sets user hp to maximum.
 current_user_hp = user_hp
-user_hp, money = battle(user_name, user_hp, user_type, user_attacks, money)
+# Explains the game.
+# Can change the number of rounds of pokemon.
+print("""\nIn this game you can battle as many Pokémon as you wish,
+the more you battle the greater your reward.
+The aim is to defeat as many as possible to get the most money,
+however you must be strategic, because if you lose against one of them,
+you lose the game (and your money).\nGOOD LUCK!\n""")
+sleep(1)
+input("Press enter to continue: ")
+# Main Game Loop.
+while True:
+    # Starts Battle.
+    current_user_hp, money = battle(
+        user_name, user_hp, user_type, user_attacks, money)
+    # Checks if user lost the battle.
+    if current_user_hp == 0:
+        # Tells them final score and ends game.
+        print("You reached a final score of ${:.2f}".format(money))
+        break
+    # Asks user if they wish to continue.
+    continue_yn = check_str_input("Do you wish to face another Pokémon? ",
+                                  ["y", "n"])
+    # If no, tells them final score and leaves programme.
+    if continue_yn == "N":
+        print("You reached a final score of ${:.2f}".format(money))
+        break
+    # Heal function.
+    current_user_hp, money = heal(money, current_user_hp, user_hp)
