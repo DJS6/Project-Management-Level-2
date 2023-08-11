@@ -321,8 +321,8 @@ while True:
         print("You reached a final score of ${:.2f}".format(money))
         break
     # Asks user if they wish to continue.
-    continue_yn = check_str_input("Do you wish to face another Pokémon? ",
-                                  ["y", "n"])
+    continue_yn = check_str_input(
+        "Do you wish to face another Pokémon? (y/n) ", ["y", "n"])
     # If no, tells them final score and leaves programme.
     if continue_yn == "N":
         print("You reached a final score of ${:.2f}".format(money))
